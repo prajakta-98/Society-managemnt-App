@@ -4,6 +4,7 @@ import { normalizeRole } from '../utils/auth.js';
 
 const navigation = [
   { label: 'Admin dashboard', to: '/admin/dashboard', shortLabel: 'A', role: 'ADMIN' },
+  { label: 'Flats', to: '/admin/flats', shortLabel: 'F', role: 'ADMIN' },
   { label: 'Resident dashboard', to: '/resident/dashboard', shortLabel: 'R', role: 'RESIDENT' },
   { label: 'Security dashboard', to: '/security/dashboard', shortLabel: 'S', role: 'SECURITY' },
 ];
@@ -40,7 +41,7 @@ function Sidebar({ isOpen, onClose }) {
 
         <nav className="flex-1 space-y-1 px-3 py-6" aria-label="Main navigation">
           <p className="mb-3 px-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
-            Dashboards
+            Navigation
           </p>
           {visibleNavigation.map((item) => (
             <NavLink

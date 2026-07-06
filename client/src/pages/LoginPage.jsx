@@ -14,6 +14,7 @@ function LoginPage() {
     isLoading,
     error,
     login,
+    loginAsDemo,
     clearError,
   } = useAuth();
 
@@ -43,6 +44,11 @@ function LoginPage() {
     }
   }
 
+  function handleDemoLogin() {
+    const demoUser = loginAsDemo();
+    navigate(getDashboardPath(demoUser.role), { replace: true });
+  }
+
   if (!isInitializing && isAuthenticated) {
     return <Navigate to={getDashboardPath(user.role)} replace />;
   }
@@ -55,6 +61,23 @@ function LoginPage() {
         </div>
         <h1 className="text-2xl font-bold tracking-tight text-slate-900">Welcome to SocietyFlow</h1>
         <p className="mt-2 text-sm text-slate-500">Sign in to manage your community workspace.</p>
+      </div>
+
+      <button
+        type="button"
+        onClick={handleDemoLogin}
+        disabled={isLoading || isInitializing}
+        className="w-full rounded-xl border border-brand-200 bg-brand-50 px-4 py-3 text-sm font-semibold text-brand-700 hover:border-brand-300 hover:bg-brand-100 focus:outline-none focus:ring-4 focus:ring-brand-100 disabled:cursor-not-allowed disabled:opacity-70"
+      >
+        Continue as Demo Admin
+      </button>
+
+      <div className="my-5 flex items-center gap-3" aria-hidden="true">
+        <span className="h-px flex-1 bg-slate-200" />
+        <span className="text-xs font-medium uppercase tracking-wider text-slate-400">
+          or sign in
+        </span>
+        <span className="h-px flex-1 bg-slate-200" />
       </div>
 
       <form className="space-y-5" onSubmit={handleSubmit}>

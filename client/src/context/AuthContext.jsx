@@ -9,6 +9,13 @@ import {
 } from '../utils/auth.js';
 
 const AuthContext = createContext(null);
+const DEMO_ACCESS_TOKEN = 'societyflow-demo-admin';
+const DEMO_ADMIN_USER = {
+  id: 'demo-admin',
+  name: 'Demo Administrator',
+  email: 'admin@societyflow.demo',
+  role: 'ADMIN',
+};
 
 function getResponsePayload(response) {
   return response.data?.data || response.data;
@@ -25,7 +32,9 @@ function normalizeUser(user) {
 export function AuthProvider({ children }) {
   const [token, setToken] = useState(() => localStorage.getItem(AUTH_TOKEN_KEY));
   const [user, setUser] = useState(() => normalizeUser(readStoredUser()));
-  const [isInitializing, setIsInitializing] = useState(Boolean(token));
+  const [isInitializing, setIsInitializing] = useState(
+    Boolean(token && token !== DEMO_ACCESS_TOKEN),
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -50,6 +59,10 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     if (!token) {
       setIsInitializing(false);
+      return undefined;
+    }
+
+    if (token === DEMO_ACCESS_TOKEN) {
       return undefined;
     }
 
@@ -113,6 +126,11 @@ export function AuthProvider({ children }) {
     }
   }
 
+  function loginAsDemo() {
+    setError('');
+    return saveSession(DEMO_ACCESS_TOKEN, DEMO_ADMIN_USER);
+  }
+
   function logout() {
     clearSession();
     setError('');
@@ -127,6 +145,7 @@ export function AuthProvider({ children }) {
       isLoading,
       error,
       login,
+      loginAsDemo,
       logout,
       clearError: () => setError(''),
     }),
